@@ -68,8 +68,10 @@ public class VilleDaoImpl implements VilleDao{
         finally {
             try {
                 if (connexion != null) {
-                	pstmt.close();
-                    connexion.close();  
+                	connexion.close();  
+                }
+                if (pstmt != null) {
+                	pstmt.close(); 
                 }
             } catch (SQLException e) {
                 throw new DaoException("Impossible de communiquer avec la base de donnees");
@@ -101,8 +103,10 @@ public class VilleDaoImpl implements VilleDao{
         finally {
             try {
                 if (connexion != null) {
-                	statement.close();
-                    connexion.close();  
+                	connexion.close();  
+                }
+                if (statement != null) {
+                	statement.close(); 
                 }
             } catch (SQLException e) {
                 throw new DaoException("Impossible de communiquer avec la base de donnees");
