@@ -1,6 +1,7 @@
 package com.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -43,13 +44,15 @@ public class VilleDaoImpl implements VilleDao{
 
 	private ArrayList<Ville> findVilleByCodePostal(String codePostal, DaoFactory daoFactory) throws DaoException {
 		Connection connexion = null;
-		Statement statement = null;
+		PreparedStatement pstmt = null;
         ResultSet resultat = null;
         ArrayList<Ville> villes = new ArrayList<Ville>();
+        String query = "SELECT * FROM ville_france WHERE Code_Postal=? ;";
         try {
             connexion = daoFactory.getConnection();
-            statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT * FROM ville_france WHERE Code_Postal="+codePostal+";");
+            pstmt = connexion.prepareStatement(query);
+            pstmt.setString(1, codePostal);
+            resultat = pstmt.executeQuery();
             while (resultat.next()) {
             	String codeCommune = resultat.getString("Code_commune_INSEE");
             	String nomCommune = resultat.getString("Nom_commune");
