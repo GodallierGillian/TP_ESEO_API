@@ -68,6 +68,7 @@ public class VilleDaoImpl implements VilleDao{
         finally {
             try {
                 if (connexion != null) {
+                	pstmt.close();
                     connexion.close();  
                 }
             } catch (SQLException e) {
@@ -100,6 +101,7 @@ public class VilleDaoImpl implements VilleDao{
         finally {
             try {
                 if (connexion != null) {
+                	statement.close();
                     connexion.close();  
                 }
             } catch (SQLException e) {
