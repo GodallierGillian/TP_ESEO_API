@@ -149,7 +149,6 @@ public class VilleDaoImpl implements VilleDao{
             statement.execute(query2);
             
         } catch (SQLException e) {
-        	e.printStackTrace();
             throw new DaoException("Impossible de communiquer avec la base de donnees");
         }
         finally {
@@ -201,7 +200,6 @@ public class VilleDaoImpl implements VilleDao{
             resultat = pstmt.executeUpdate();
             statement.execute(query2);
         } catch (SQLException e) {
-        	e.printStackTrace();
             throw new DaoException("Impossible de communiquer avec la base de donnees");
         }
         finally {
@@ -257,6 +255,9 @@ public class VilleDaoImpl implements VilleDao{
                 }
                 if (pstmt != null) {
                 	pstmt.close(); 
+                }
+                if (statement != null) {
+                	statement.close(); 
                 }
             } catch (SQLException e) {
                 throw new DaoException("Impossible de communiquer avec la base de donnees");
