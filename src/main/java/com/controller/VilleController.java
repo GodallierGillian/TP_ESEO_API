@@ -23,4 +23,5 @@ public class VilleController {
 		ArrayList<Ville> listeVille = villeBloService.getInfoVilles(codePostal);
 		return listeVille;
 	}
+	
 }

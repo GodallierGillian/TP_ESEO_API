@@ -37,8 +37,6 @@ public class VilleDaoImpl implements VilleDao{
 				System.out.println("error");
 			}
 		}
-		
-		
 		return listeVille;
 	}
 
@@ -113,6 +111,5 @@ public class VilleDaoImpl implements VilleDao{
             }
         }
 	}
-
     
 }
