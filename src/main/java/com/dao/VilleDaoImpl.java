@@ -7,13 +7,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.dto.Coordonnee;
 import com.dto.Ville;
+
 @Repository
 public class VilleDaoImpl implements VilleDao{
-
+	private static final Logger logger 
+	  = LoggerFactory.getLogger(VilleDaoImpl.class);
 	
 	public ArrayList<Ville> findAllVilles(String codePostal){
 		System.out.println("findAllVilles");
@@ -111,5 +115,154 @@ public class VilleDaoImpl implements VilleDao{
             }
         }
 	}
-    
+
+	@Override
+	public String addVille(Ville ville) {
+		DaoFactory daoFactory = DaoFactory.getInstance();
+		try {
+			addVilleDao(ville, daoFactory);
+			return "Ville ajoutée à la base de données";
+			
+		} catch (DaoException e) {
+			return "an error occured";
+		}
+		
+	}
+	public void addVilleDao(Ville ville, DaoFactory daoFactory) throws DaoException {
+		Connection connexion = null;
+		PreparedStatement pstmt = null;
+		Statement statement = null;
+		String query2 = "COMMIT;";
+        int resultat;
+    	String query = "INSERT INTO ville_france VALUES ( ?, ?, ?, '', '', ?, ?);";
+    	
+    	try {
+        	connexion = daoFactory.getConnection();
+        	statement = connexion.createStatement();
+            pstmt = connexion.prepareStatement(query);
+            pstmt.setString(1, ville.getCodeCommune());
+            pstmt.setString(2, ville.getNomCommune());
+            pstmt.setString(3, ville.getCodePostal());
+            pstmt.setFloat(4, ville.getCoordonnee().getLatitude());
+            pstmt.setFloat(5, ville.getCoordonnee().getLongitude());
+            resultat = pstmt.executeUpdate();
+            statement.execute(query2);
+            
+        } catch (SQLException e) {
+        	e.printStackTrace();
+            throw new DaoException("Impossible de communiquer avec la base de donnees");
+        }
+        finally {
+            try {
+                if (connexion != null) {
+                	connexion.close();  
+                }
+                if (pstmt != null) {
+                	pstmt.close(); 
+                }
+                if (statement != null) {
+                	statement.close(); 
+                }
+            } catch (SQLException e) {
+                throw new DaoException("Impossible de communiquer avec la base de donnees");
+            }
+        }
+	}
+
+	@Override
+	public String modifyVille(String codeCommuneINSEE, Ville ville) {
+		DaoFactory daoFactory = DaoFactory.getInstance();
+		try {
+			modifyVilleDao(codeCommuneINSEE, ville, daoFactory);
+			return "Ville modifiée avec succès";
+			
+		} catch (DaoException e) {
+			return "an error occured";
+		}
+	}
+
+	private void modifyVilleDao(String codeCommuneINSEE, Ville ville, DaoFactory daoFactory) throws DaoException {
+		Connection connexion = null;
+		PreparedStatement pstmt = null;
+        int resultat;
+        Statement statement = null;
+		String query2 = "COMMIT;";
+    	String query = "UPDATE ville_france SET Code_commune_INSEE=?, Nom_commune=?,  Code_postal=?, Latitude=?, Longitude=? WHERE Code_commune_INSEE=?";
+    	try {
+        	connexion = daoFactory.getConnection();
+        	statement=connexion.createStatement();
+            pstmt = connexion.prepareStatement(query);
+            pstmt.setString(1, ville.getCodeCommune());
+            pstmt.setString(2, ville.getNomCommune());
+            pstmt.setString(3, ville.getCodePostal());
+            pstmt.setFloat(4, ville.getCoordonnee().getLatitude());
+            pstmt.setFloat(5, ville.getCoordonnee().getLongitude());
+            pstmt.setString(6, codeCommuneINSEE);
+            resultat = pstmt.executeUpdate();
+            statement.execute(query2);
+        } catch (SQLException e) {
+        	e.printStackTrace();
+            throw new DaoException("Impossible de communiquer avec la base de donnees");
+        }
+        finally {
+            try {
+                if (connexion != null) {
+                	connexion.close();  
+                }
+                if (pstmt != null) {
+                	pstmt.close(); 
+                }
+                if (statement != null) {
+                	statement.close(); 
+                }
+            } catch (SQLException e) {
+                throw new DaoException("Impossible de communiquer avec la base de donnees");
+            }
+        }
+	}
+	
+	@Override
+	public String deleteVille(String codeCommuneINSEE) {
+		DaoFactory daoFactory = DaoFactory.getInstance();
+		try {
+			deleteVilleDao(codeCommuneINSEE, daoFactory);
+			return "Ville supprimée avec succès";
+			
+		} catch (DaoException e) {
+			return "an error occured";
+		}
+	}
+	
+	private void deleteVilleDao(String codeCommuneINSEE, DaoFactory daoFactory) throws DaoException {
+		Connection connexion = null;
+		PreparedStatement pstmt = null;
+        ResultSet resultat = null;
+        Statement statement = null;
+		String query2 = "COMMIT;";
+        String query = "DELETE FROM ville_france WHERE Code_commune_INSEE=? ;";
+        try {
+            connexion = daoFactory.getConnection();
+            statement = connexion.createStatement();
+            pstmt = connexion.prepareStatement(query);
+            pstmt.setString(1, codeCommuneINSEE);
+            pstmt.execute();
+            statement.execute(query2);
+        } catch (SQLException e) {
+            throw new DaoException("Impossible de communiquer avec la base de donnees");
+        }
+        finally {
+            try {
+                if (connexion != null) {
+                	connexion.close();  
+                }
+                if (pstmt != null) {
+                	pstmt.close(); 
+                }
+            } catch (SQLException e) {
+                throw new DaoException("Impossible de communiquer avec la base de donnees");
+            }
+        }
+	}
+
+	
 }

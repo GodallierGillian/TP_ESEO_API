@@ -17,4 +17,22 @@ public class VilleBLOImpl implements VilleBLO{
 		ArrayList<Ville> listeVille = villeDAO.findAllVilles(codePostal);
 		return listeVille;
 	}
+
+	@Override
+	public String addVille(Ville ville) {
+		String response = villeDAO.addVille(ville);
+		return response;
+	}
+
+	@Override
+	public String modifyVille(String codeCommuneINSEE, Ville ville) {
+		String response = villeDAO.modifyVille(codeCommuneINSEE, ville);
+		return response;
+	}
+
+	@Override
+	public String deleteVille(String codeCommuneINSEE) {
+		String response = villeDAO.deleteVille(codeCommuneINSEE);
+		return response;
+	}
 }
