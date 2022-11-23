@@ -1,6 +1,5 @@
 package com.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -32,22 +31,19 @@ public class VilleController {
 	@ResponseBody
 	public List<Ville> get(@RequestParam(required = false, value= "codePostal")String codePostal){
 		logger.info("getVilleByCodePostal");
-		List<Ville> listeVille = villeBloService.getInfoVilles(codePostal);
-		return listeVille;
+		return villeBloService.getInfoVilles(codePostal);
 	}
 	@RequestMapping(value="/villeByName", method=RequestMethod.GET)
 	@ResponseBody
 	public List<Ville> getVilleByName(@RequestParam(required = false, value= "nomCommune")String nomCommune){
 		logger.info("getVilleByName");
-		List<Ville> listeVille = villeBloService.getInfoVillesbyName(nomCommune);
-		return listeVille;
+		return villeBloService.getInfoVillesbyName(nomCommune);
 	}
 	@RequestMapping(value="/villeByCodeCommuneINSEE", method=RequestMethod.GET)
 	@ResponseBody
 	public List<Ville> getVilleByCodeCommuneINSEE(@RequestParam(required = false, value= "codeCommuneINSEE")String codeCommuneINSEE){
 		logger.info("getVilleByCodeCommuneINSEE");
-		List<Ville> listeVille = villeBloService.getInfoVillesbyCodeCommuneINSEE(codeCommuneINSEE);
-		return listeVille;
+		return villeBloService.getInfoVillesbyCodeCommuneINSEE(codeCommuneINSEE);
 	}
 	
 	@PostMapping(value="/ajouterVille")

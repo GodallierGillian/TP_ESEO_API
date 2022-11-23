@@ -27,9 +27,8 @@ public class DaoFactory {
     }
 
     public java.sql.Connection getConnection() throws SQLException {
-    	try(java.sql.Connection connexion= DriverManager.getConnection(url, username, password)){
-    		connexion.setAutoCommit(false);
-            return connexion;
-    	}
+    	java.sql.Connection connexion= DriverManager.getConnection(url, username, password);
+    	connexion.setAutoCommit(false);
+        return connexion;
     }
 }
