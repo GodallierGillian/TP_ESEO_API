@@ -6,11 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-
 import com.dto.Coordonnee;
 import com.dto.Ville;
 
@@ -19,10 +19,10 @@ public class VilleDaoImpl implements VilleDao{
 	private static final Logger logger 
 	  = LoggerFactory.getLogger(VilleDaoImpl.class);
 	
-	public ArrayList<Ville> findAllVilles(String codePostal){
+	public List<Ville> findAllVilles(String codePostal){
 		DaoFactory daoFactory = DaoFactory.getInstance();
 		
-		ArrayList<Ville> listeVille = new ArrayList<Ville>();
+		List<Ville> listeVille = new ArrayList<Ville>();
 		if(codePostal!=null) {
 			try {
 				listeVille=findVilleByCodePostal(codePostal, daoFactory);
@@ -40,10 +40,10 @@ public class VilleDaoImpl implements VilleDao{
 		return listeVille;
 	}
 	@Override
-	public ArrayList<Ville> findAllVillesbyName(String nomCommune) {
+	public List<Ville> findAllVillesbyName(String nomCommune) {
 		DaoFactory daoFactory = DaoFactory.getInstance();
 		
-		ArrayList<Ville> listeVille = new ArrayList<Ville>();
+		List<Ville> listeVille = new ArrayList<Ville>();
 		if(nomCommune!=null) {
 			try {
 				listeVille=findVilleByName(nomCommune, daoFactory);
@@ -60,12 +60,35 @@ public class VilleDaoImpl implements VilleDao{
 		}
 		return listeVille;
 	}
+	
+	@Override
+	public List<Ville> findAllVillesbyCodeCommuneINSEE(String codeCommuneINSEE) {
+		DaoFactory daoFactory = DaoFactory.getInstance();
+		
+		List<Ville> listeVille = new ArrayList<Ville>();
+		if(codeCommuneINSEE!=null) {
+			try {
+				listeVille=findVilleByCodeCommuneINSEE(codeCommuneINSEE, daoFactory);
+			} catch (DaoException e) {
+				logger.info("error");
+			}
+		}
+		else {
+			try {
+				listeVille=findAllVille(daoFactory);
+			} catch (DaoException e) {
+				// TODO Auto-generated catch block
+				logger.info("error");
+			}
+		}
+		return listeVille;
+	}
 
-	private ArrayList<Ville> findVilleByName(String name, DaoFactory daoFactory) throws DaoException {
+	private List<Ville> findVilleByName(String name, DaoFactory daoFactory) throws DaoException {
 		Connection connexion = null;
 		PreparedStatement pstmt = null;
         ResultSet resultat = null;
-        ArrayList<Ville> villes = new ArrayList<Ville>();
+        List<Ville> villes = new ArrayList<Ville>();
         String query = "SELECT * FROM ville_france WHERE Nom_Commune=? ;";
         try {
             connexion = daoFactory.getConnection();
@@ -99,11 +122,11 @@ public class VilleDaoImpl implements VilleDao{
         }
 	}
 	
-	private ArrayList<Ville> findVilleByCodePostal(String codePostal, DaoFactory daoFactory) throws DaoException {
+	private List<Ville> findVilleByCodePostal(String codePostal, DaoFactory daoFactory) throws DaoException {
 		Connection connexion = null;
 		PreparedStatement pstmt = null;
         ResultSet resultat = null;
-        ArrayList<Ville> villes = new ArrayList<Ville>();
+        List<Ville> villes = new ArrayList<Ville>();
         String query = "SELECT * FROM ville_france WHERE Code_Postal=? ;";
         try {
             connexion = daoFactory.getConnection();
@@ -136,34 +159,13 @@ public class VilleDaoImpl implements VilleDao{
         }
 	}
 	
-	@Override
-	public ArrayList<Ville> findAllVillesbyCodeCommuneINSEE(String codeCommuneINSEE) {
-		DaoFactory daoFactory = DaoFactory.getInstance();
-		
-		ArrayList<Ville> listeVille = new ArrayList<Ville>();
-		if(codeCommuneINSEE!=null) {
-			try {
-				listeVille=findVilleByCodeCommuneINSEE(codeCommuneINSEE, daoFactory);
-			} catch (DaoException e) {
-				logger.info("error");
-			}
-		}
-		else {
-			try {
-				listeVille=findAllVille(daoFactory);
-			} catch (DaoException e) {
-				// TODO Auto-generated catch block
-				logger.info("error");
-			}
-		}
-		return listeVille;
-	}
 	
-	private ArrayList<Ville> findVilleByCodeCommuneINSEE(String codeCommuneINSEE, DaoFactory daoFactory) throws DaoException {
+	
+	private List<Ville> findVilleByCodeCommuneINSEE(String codeCommuneINSEE, DaoFactory daoFactory) throws DaoException {
 		Connection connexion = null;
 		PreparedStatement pstmt = null;
         ResultSet resultat = null;
-        ArrayList<Ville> villes = new ArrayList<Ville>();
+        List<Ville> villes = new ArrayList<Ville>();
         String query = "SELECT * FROM ville_france WHERE Code_commune_INSEE=? ;";
         try {
             connexion = daoFactory.getConnection();
@@ -196,11 +198,11 @@ public class VilleDaoImpl implements VilleDao{
             }
         }
 	}
-	private ArrayList<Ville> findAllVille(DaoFactory daoFactory) throws DaoException {
+	private List<Ville> findAllVille(DaoFactory daoFactory) throws DaoException {
 		Connection connexion = null;
 		Statement statement = null;
         ResultSet resultat = null;
-        ArrayList<Ville> villes = new ArrayList<Ville>();
+        List<Ville> villes = new ArrayList<Ville>();
         try {
             connexion = daoFactory.getConnection();
             statement = connexion.createStatement();

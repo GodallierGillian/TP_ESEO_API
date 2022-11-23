@@ -1,6 +1,7 @@
 package com.blo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,39 +14,33 @@ public class VilleBLOImpl implements VilleBLO{
 	@Autowired
 	private VilleDao villeDAO;
 	
-	public ArrayList<Ville> getInfoVilles(String codePostal){
-		ArrayList<Ville> listeVille = villeDAO.findAllVilles(codePostal);
-		return listeVille;
+	public List<Ville> getInfoVilles(String codePostal){
+		return villeDAO.findAllVilles(codePostal); 
 	}
 
 	@Override
 	public String addVille(Ville ville) {
-		String response = villeDAO.addVille(ville);
-		return response;
+		return villeDAO.addVille(ville);
 	}
 
 	@Override
 	public String modifyVille(String codeCommuneINSEE, Ville ville) {
-		String response = villeDAO.modifyVille(codeCommuneINSEE, ville);
-		return response;
+		return villeDAO.modifyVille(codeCommuneINSEE, ville);
 	}
 
 	@Override
 	public String deleteVille(String codeCommuneINSEE) {
-		String response = villeDAO.deleteVille(codeCommuneINSEE);
-		return response;
+		return villeDAO.deleteVille(codeCommuneINSEE);
 	}
 
 	@Override
-	public ArrayList<Ville> getInfoVillesbyName(String nomCommune) {
-		ArrayList<Ville> listeVille = villeDAO.findAllVillesbyName(nomCommune);
-		return listeVille;
+	public List<Ville> getInfoVillesbyName(String nomCommune) {
+		return villeDAO.findAllVillesbyName(nomCommune);
 	}
 
 	@Override
-	public ArrayList<Ville> getInfoVillesbyCodeCommuneINSEE(String codeCommuneINSEE) {
-		ArrayList<Ville> listeVille = villeDAO.findAllVillesbyCodeCommuneINSEE(codeCommuneINSEE);
-		return listeVille;
+	public List<Ville> getInfoVillesbyCodeCommuneINSEE(String codeCommuneINSEE) {
+		return villeDAO.findAllVillesbyCodeCommuneINSEE(codeCommuneINSEE);
 	}
 	
 }
