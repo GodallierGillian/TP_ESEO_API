@@ -9,4 +9,6 @@ public interface VilleBLO {
 	String addVille(Ville ville);
 	String modifyVille(String codeCommuneINSEE, Ville ville);
 	String deleteVille(String codeCommuneINSEE);
+	ArrayList<Ville> getInfoVillesbyName(String nomCommune);
+	ArrayList<Ville> getInfoVillesbyCodeCommuneINSEE(String codeCommuneINSEE);
 }

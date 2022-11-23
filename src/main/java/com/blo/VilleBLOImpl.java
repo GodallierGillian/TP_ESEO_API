@@ -35,4 +35,17 @@ public class VilleBLOImpl implements VilleBLO{
 		String response = villeDAO.deleteVille(codeCommuneINSEE);
 		return response;
 	}
+
+	@Override
+	public ArrayList<Ville> getInfoVillesbyName(String nomCommune) {
+		ArrayList<Ville> listeVille = villeDAO.findAllVillesbyName(nomCommune);
+		return listeVille;
+	}
+
+	@Override
+	public ArrayList<Ville> getInfoVillesbyCodeCommuneINSEE(String codeCommuneINSEE) {
+		ArrayList<Ville> listeVille = villeDAO.findAllVillesbyCodeCommuneINSEE(codeCommuneINSEE);
+		return listeVille;
+	}
+	
 }

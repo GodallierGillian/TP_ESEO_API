@@ -27,6 +27,20 @@ public class VilleController {
 		ArrayList<Ville> listeVille = villeBloService.getInfoVilles(codePostal);
 		return listeVille;
 	}
+	@RequestMapping(value="/villeByName", method=RequestMethod.GET)
+	@ResponseBody
+	public ArrayList<Ville> getVilleByName(@RequestParam(required = false, value= "nomCommune")String nomCommune){
+		System.out.println("get");
+		ArrayList<Ville> listeVille = villeBloService.getInfoVillesbyName(nomCommune);
+		return listeVille;
+	}
+	@RequestMapping(value="/villeByCodeCommuneINSEE", method=RequestMethod.GET)
+	@ResponseBody
+	public ArrayList<Ville> getVilleByCodeCommuneINSEE(@RequestParam(required = false, value= "codeCommuneINSEE")String codeCommuneINSEE){
+		System.out.println("getVilleByCodeCommuneINSEE");
+		ArrayList<Ville> listeVille = villeBloService.getInfoVillesbyCodeCommuneINSEE(codeCommuneINSEE);
+		return listeVille;
+	}
 	
 	@PostMapping(value="/ajouterVille")
 	public String post(@RequestBody Ville ville) {

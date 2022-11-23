@@ -9,4 +9,6 @@ public interface VilleDao {
 	String addVille(Ville ville);
 	String modifyVille(String codeCommuneINSEE, Ville ville);
 	String deleteVille(String codeCommuneINSEE);
+	ArrayList<Ville> findAllVillesbyName(String nomCommune);
+	ArrayList<Ville> findAllVillesbyCodeCommuneINSEE(String codeCommuneINSEE);
 }

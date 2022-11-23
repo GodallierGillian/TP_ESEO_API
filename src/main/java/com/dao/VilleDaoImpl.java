@@ -43,7 +43,70 @@ public class VilleDaoImpl implements VilleDao{
 		}
 		return listeVille;
 	}
+	@Override
+	public ArrayList<Ville> findAllVillesbyName(String nomCommune) {
+		System.out.println("findAllVilles");
+		System.out.println(nomCommune);
+		DaoFactory daoFactory = DaoFactory.getInstance();
+		
+		ArrayList<Ville> listeVille = new ArrayList<Ville>();
+		if(nomCommune!=null) {
+			try {
+				listeVille=findVilleByName(nomCommune, daoFactory);
+			} catch (DaoException e) {
+				// TODO Auto-generated catch block
+				System.out.println("error");
+			}
+		}
+		else {
+			try {
+				listeVille=findAllVille(daoFactory);
+			} catch (DaoException e) {
+				// TODO Auto-generated catch block
+				System.out.println("error");
+			}
+		}
+		return listeVille;
+	}
 
+	private ArrayList<Ville> findVilleByName(String name, DaoFactory daoFactory) throws DaoException {
+		Connection connexion = null;
+		PreparedStatement pstmt = null;
+        ResultSet resultat = null;
+        ArrayList<Ville> villes = new ArrayList<Ville>();
+        String query = "SELECT * FROM ville_france WHERE Nom_Commune=? ;";
+        try {
+            connexion = daoFactory.getConnection();
+            pstmt = connexion.prepareStatement(query);
+            pstmt.setString(1, name);
+            resultat = pstmt.executeQuery();
+            while (resultat.next()) {
+            	String codeCommune = resultat.getString("Code_commune_INSEE");
+            	String nomCommune = resultat.getString("Nom_commune");
+            	String codePostal = resultat.getString("Code_postal");
+            	float latitude = resultat.getFloat("Latitude");
+            	float longitude = resultat.getFloat("Longitude");
+            	Ville ville = new Ville(codeCommune, nomCommune, codePostal, new Coordonnee(latitude,longitude));
+            	villes.add(ville);
+            }
+            return villes;
+        } catch (SQLException e) {
+            throw new DaoException("Impossible de communiquer avec la base de donnees");
+        }
+        finally {
+            try {
+                if (connexion != null) {
+                	connexion.close();  
+                }
+                if (pstmt != null) {
+                	pstmt.close(); 
+                }
+            } catch (SQLException e) {
+                throw new DaoException("Impossible de communiquer avec la base de donnees");
+            }
+        }
+	}
+	
 	private ArrayList<Ville> findVilleByCodePostal(String codePostal, DaoFactory daoFactory) throws DaoException {
 		Connection connexion = null;
 		PreparedStatement pstmt = null;
@@ -58,6 +121,69 @@ public class VilleDaoImpl implements VilleDao{
             while (resultat.next()) {
             	String codeCommune = resultat.getString("Code_commune_INSEE");
             	String nomCommune = resultat.getString("Nom_commune");
+            	float latitude = resultat.getFloat("Latitude");
+            	float longitude = resultat.getFloat("Longitude");
+            	Ville ville = new Ville(codeCommune, nomCommune, codePostal, new Coordonnee(latitude,longitude));
+            	villes.add(ville);
+            }
+            return villes;
+        } catch (SQLException e) {
+            throw new DaoException("Impossible de communiquer avec la base de donnees");
+        }
+        finally {
+            try {
+                if (connexion != null) {
+                	connexion.close();  
+                }
+                if (pstmt != null) {
+                	pstmt.close(); 
+                }
+            } catch (SQLException e) {
+                throw new DaoException("Impossible de communiquer avec la base de donnees");
+            }
+        }
+	}
+	
+	@Override
+	public ArrayList<Ville> findAllVillesbyCodeCommuneINSEE(String codeCommuneINSEE) {
+		System.out.println("findAllVilles");
+		System.out.println(codeCommuneINSEE);
+		DaoFactory daoFactory = DaoFactory.getInstance();
+		
+		ArrayList<Ville> listeVille = new ArrayList<Ville>();
+		if(codeCommuneINSEE!=null) {
+			try {
+				listeVille=findVilleByCodeCommuneINSEE(codeCommuneINSEE, daoFactory);
+			} catch (DaoException e) {
+				System.out.println("error");
+			}
+		}
+		else {
+			try {
+				listeVille=findAllVille(daoFactory);
+			} catch (DaoException e) {
+				// TODO Auto-generated catch block
+				System.out.println("error");
+			}
+		}
+		return listeVille;
+	}
+	
+	private ArrayList<Ville> findVilleByCodeCommuneINSEE(String codeCommuneINSEE, DaoFactory daoFactory) throws DaoException {
+		Connection connexion = null;
+		PreparedStatement pstmt = null;
+        ResultSet resultat = null;
+        ArrayList<Ville> villes = new ArrayList<Ville>();
+        String query = "SELECT * FROM ville_france WHERE Code_commune_INSEE=? ;";
+        try {
+            connexion = daoFactory.getConnection();
+            pstmt = connexion.prepareStatement(query);
+            pstmt.setString(1, codeCommuneINSEE);
+            resultat = pstmt.executeQuery();
+            while (resultat.next()) {
+            	String codeCommune = resultat.getString("Code_commune_INSEE");
+            	String nomCommune = resultat.getString("Nom_commune");
+            	String codePostal = resultat.getString("Code_postal");
             	float latitude = resultat.getFloat("Latitude");
             	float longitude = resultat.getFloat("Longitude");
             	Ville ville = new Ville(codeCommune, nomCommune, codePostal, new Coordonnee(latitude,longitude));
@@ -264,6 +390,8 @@ public class VilleDaoImpl implements VilleDao{
             }
         }
 	}
+	
+	
 
 	
 }
