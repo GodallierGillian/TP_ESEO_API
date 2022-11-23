@@ -3,6 +3,8 @@ package com.controller;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,14 +25,14 @@ public class VilleController {
 	@RequestMapping(value="/ville", method=RequestMethod.GET)
 	@ResponseBody
 	public ArrayList<Ville> get(@RequestParam(required = false, value= "codePostal")String codePostal){
-		System.out.println("get");
+		System.out.println("getVilleByCodePostal");
 		ArrayList<Ville> listeVille = villeBloService.getInfoVilles(codePostal);
 		return listeVille;
 	}
 	@RequestMapping(value="/villeByName", method=RequestMethod.GET)
 	@ResponseBody
 	public ArrayList<Ville> getVilleByName(@RequestParam(required = false, value= "nomCommune")String nomCommune){
-		System.out.println("get");
+		System.out.println("getVilleByName");
 		ArrayList<Ville> listeVille = villeBloService.getInfoVillesbyName(nomCommune);
 		return listeVille;
 	}
@@ -43,22 +45,43 @@ public class VilleController {
 	}
 	
 	@PostMapping(value="/ajouterVille")
-	public String post(@RequestBody Ville ville) {
+	public ResponseEntity<String> post(@RequestBody Ville ville) {
 		System.out.println("post");
 		String response = villeBloService.addVille(ville);
-		return response;
+		HttpStatus httpStatus;
+		if(response.equals("Ville ajoutée à la base de données")) {
+			httpStatus = HttpStatus.CREATED;
+		}
+		else {
+			httpStatus = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(httpStatus).body(response);
 	}
 	@PutMapping(value="/modifierVille")
-	public String put(@RequestBody Ville ville, @RequestParam(required = true, value = "codeCommuneINSEE") String codeCommuneINSEE) {
+	public ResponseEntity<String> put(@RequestBody Ville ville, @RequestParam(required = true, value = "codeCommuneINSEE") String codeCommuneINSEE) {
 		System.out.println("put");
 		String response = villeBloService.modifyVille(codeCommuneINSEE,ville);
-		return response;
+		HttpStatus httpStatus;
+		if(response.equals("Ville modifiée avec succès")) {
+			httpStatus = HttpStatus.ACCEPTED;
+		}
+		else {
+			httpStatus = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(httpStatus).body(response);
 	}
 	@DeleteMapping(value="/supprimerVille")
-	public String delete(@RequestParam(required = false, value= "codeCommuneINSEE")String codeCommuneINSEE) {
+	public ResponseEntity<String> delete(@RequestParam(required = true, value= "codeCommuneINSEE")String codeCommuneINSEE) {
 		System.out.println("delete");
 		String response = villeBloService.deleteVille(codeCommuneINSEE);
-		return response;
+		HttpStatus httpStatus;
+		if(response.equals("Ville supprimée avec succès")) {
+			httpStatus = HttpStatus.ACCEPTED;
+		}
+		else {
+			httpStatus = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(httpStatus).body(response);
 	}
 	
 }

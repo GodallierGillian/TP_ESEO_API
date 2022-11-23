@@ -146,7 +146,7 @@ public class VilleDaoImpl implements VilleDao{
 	
 	@Override
 	public ArrayList<Ville> findAllVillesbyCodeCommuneINSEE(String codeCommuneINSEE) {
-		System.out.println("findAllVilles");
+		System.out.println("try to find villes by Code Commune INSEE");
 		System.out.println(codeCommuneINSEE);
 		DaoFactory daoFactory = DaoFactory.getInstance();
 		
