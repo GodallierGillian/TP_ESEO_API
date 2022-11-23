@@ -327,8 +327,8 @@ public class VilleDaoImpl implements VilleDao{
 				logger.info("Impossible de communiquer avec la base de donnees");
 			} finally {
 				try{
-					if (statement != null) {
-						statement.close();
+					if (preparedStatement != null) {
+						preparedStatement.close();
 					}
 				} catch (SQLException e) {
 					logger.info("Impossible de communiquer avec la base de donnees");
