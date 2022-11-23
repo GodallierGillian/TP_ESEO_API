@@ -18,23 +18,29 @@ import com.dto.Ville;
 public class VilleDaoImpl implements VilleDao{
 	private static final Logger logger 
 	  = LoggerFactory.getLogger(VilleDaoImpl.class);
+	private static final String ERROR = "an error occured";
+	private static final String CODE_COMMUNE_INSEE = "Code_commune_INSEE";
+	private static final String NOM_COMMUNE = "Nom_commune";
+	private static final String CODE_POSTAL = "Code_postal";
+	private static final String LATITUDE = "Latitude";
+	private static final String LONGITUDE = "Longitude";
 	
 	public List<Ville> findAllVilles(String codePostal){
 		DaoFactory daoFactory = DaoFactory.getInstance();
 		
-		List<Ville> listeVille = new ArrayList<Ville>();
+		List<Ville> listeVille = new ArrayList<>();
 		if(codePostal!=null) {
 			try {
 				listeVille=findVilleByCodePostal(codePostal, daoFactory);
 			} catch (DaoException e) {
-				logger.info("error");
+				logger.info(ERROR);
 			}
 		}
 		else {
 			try {
 				listeVille=findAllVille(daoFactory);
 			} catch (DaoException e) {
-				logger.info("error");
+				logger.info(ERROR);
 			}
 		}
 		return listeVille;
@@ -43,19 +49,19 @@ public class VilleDaoImpl implements VilleDao{
 	public List<Ville> findAllVillesbyName(String nomCommune) {
 		DaoFactory daoFactory = DaoFactory.getInstance();
 		
-		List<Ville> listeVille = new ArrayList<Ville>();
+		List<Ville> listeVille = new ArrayList<>();
 		if(nomCommune!=null) {
 			try {
 				listeVille=findVilleByName(nomCommune, daoFactory);
 			} catch (DaoException e) {
-				logger.info("error");
+				logger.info(ERROR);
 			}
 		}
 		else {
 			try {
 				listeVille=findAllVille(daoFactory);
 			} catch (DaoException e) {
-				logger.info("error");
+				logger.info(ERROR);
 			}
 		}
 		return listeVille;
@@ -65,20 +71,19 @@ public class VilleDaoImpl implements VilleDao{
 	public List<Ville> findAllVillesbyCodeCommuneINSEE(String codeCommuneINSEE) {
 		DaoFactory daoFactory = DaoFactory.getInstance();
 		
-		List<Ville> listeVille = new ArrayList<Ville>();
+		List<Ville> listeVille = new ArrayList<>();
 		if(codeCommuneINSEE!=null) {
 			try {
 				listeVille=findVilleByCodeCommuneINSEE(codeCommuneINSEE, daoFactory);
 			} catch (DaoException e) {
-				logger.info("error");
+				logger.info(ERROR);
 			}
 		}
 		else {
 			try {
 				listeVille=findAllVille(daoFactory);
 			} catch (DaoException e) {
-				// TODO Auto-generated catch block
-				logger.info("error");
+				logger.info(ERROR);
 			}
 		}
 		return listeVille;
@@ -88,7 +93,7 @@ public class VilleDaoImpl implements VilleDao{
 		Connection connexion = null;
 		PreparedStatement pstmt = null;
         ResultSet resultat = null;
-        List<Ville> villes = new ArrayList<Ville>();
+        List<Ville> villes = new ArrayList<>();
         String query = "SELECT * FROM ville_france WHERE Nom_Commune=? ;";
         try {
             connexion = daoFactory.getConnection();
@@ -96,11 +101,11 @@ public class VilleDaoImpl implements VilleDao{
             pstmt.setString(1, name);
             resultat = pstmt.executeQuery();
             while (resultat.next()) {
-            	String codeCommune = resultat.getString("Code_commune_INSEE");
-            	String nomCommune = resultat.getString("Nom_commune");
-            	String codePostal = resultat.getString("Code_postal");
-            	float latitude = resultat.getFloat("Latitude");
-            	float longitude = resultat.getFloat("Longitude");
+            	String codeCommune = resultat.getString(CODE_COMMUNE_INSEE);
+            	String nomCommune = resultat.getString(NOM_COMMUNE);
+            	String codePostal = resultat.getString(CODE_POSTAL);
+            	float latitude = resultat.getFloat(LATITUDE);
+            	float longitude = resultat.getFloat(LONGITUDE);
             	Ville ville = new Ville(codeCommune, nomCommune, codePostal, new Coordonnee(latitude,longitude));
             	villes.add(ville);
             }
@@ -126,7 +131,7 @@ public class VilleDaoImpl implements VilleDao{
 		Connection connexion = null;
 		PreparedStatement pstmt = null;
         ResultSet resultat = null;
-        List<Ville> villes = new ArrayList<Ville>();
+        List<Ville> villes = new ArrayList<>();
         String query = "SELECT * FROM ville_france WHERE Code_Postal=? ;";
         try {
             connexion = daoFactory.getConnection();
@@ -134,10 +139,10 @@ public class VilleDaoImpl implements VilleDao{
             pstmt.setString(1, codePostal);
             resultat = pstmt.executeQuery();
             while (resultat.next()) {
-            	String codeCommune = resultat.getString("Code_commune_INSEE");
-            	String nomCommune = resultat.getString("Nom_commune");
-            	float latitude = resultat.getFloat("Latitude");
-            	float longitude = resultat.getFloat("Longitude");
+            	String codeCommune = resultat.getString(CODE_COMMUNE_INSEE);
+            	String nomCommune = resultat.getString(NOM_COMMUNE);
+            	float latitude = resultat.getFloat(LATITUDE);
+            	float longitude = resultat.getFloat(LONGITUDE);
             	Ville ville = new Ville(codeCommune, nomCommune, codePostal, new Coordonnee(latitude,longitude));
             	villes.add(ville);
             }
@@ -165,7 +170,7 @@ public class VilleDaoImpl implements VilleDao{
 		Connection connexion = null;
 		PreparedStatement pstmt = null;
         ResultSet resultat = null;
-        List<Ville> villes = new ArrayList<Ville>();
+        List<Ville> villes = new ArrayList<>();
         String query = "SELECT * FROM ville_france WHERE Code_commune_INSEE=? ;";
         try {
             connexion = daoFactory.getConnection();
@@ -173,11 +178,11 @@ public class VilleDaoImpl implements VilleDao{
             pstmt.setString(1, codeCommuneINSEE);
             resultat = pstmt.executeQuery();
             while (resultat.next()) {
-            	String codeCommune = resultat.getString("Code_commune_INSEE");
-            	String nomCommune = resultat.getString("Nom_commune");
-            	String codePostal = resultat.getString("Code_postal");
-            	float latitude = resultat.getFloat("Latitude");
-            	float longitude = resultat.getFloat("Longitude");
+            	String codeCommune = resultat.getString(CODE_COMMUNE_INSEE);
+            	String nomCommune = resultat.getString(NOM_COMMUNE);
+            	String codePostal = resultat.getString(CODE_POSTAL);
+            	float latitude = resultat.getFloat(LATITUDE);
+            	float longitude = resultat.getFloat(LONGITUDE);
             	Ville ville = new Ville(codeCommune, nomCommune, codePostal, new Coordonnee(latitude,longitude));
             	villes.add(ville);
             }
@@ -208,11 +213,11 @@ public class VilleDaoImpl implements VilleDao{
             statement = connexion.createStatement();
             resultat = statement.executeQuery("SELECT * FROM ville_france;");
             while (resultat.next()) {
-            	String codeCommune = resultat.getString("Code_commune_INSEE");
-            	String nomCommune = resultat.getString("Nom_commune");
-            	String codePostal = resultat.getString("Code_Postal");
-            	float latitude = resultat.getFloat("Latitude");
-            	float longitude = resultat.getFloat("Longitude");
+            	String codeCommune = resultat.getString(CODE_COMMUNE_INSEE);
+            	String nomCommune = resultat.getString(NOM_COMMUNE);
+            	String codePostal = resultat.getString(CODE_POSTAL);
+            	float latitude = resultat.getFloat(LATITUDE);
+            	float longitude = resultat.getFloat(LONGITUDE);
             	Ville ville = new Ville(codeCommune, nomCommune, codePostal, new Coordonnee(latitude,longitude));
             	villes.add(ville);
             }
@@ -251,7 +256,6 @@ public class VilleDaoImpl implements VilleDao{
 		PreparedStatement pstmt = null;
 		Statement statement = null;
 		String query2 = "COMMIT;";
-        int resultat;
     	String query = "INSERT INTO ville_france VALUES ( ?, ?, ?, '', '', ?, ?);";
     	
     	try {
@@ -263,9 +267,8 @@ public class VilleDaoImpl implements VilleDao{
             pstmt.setString(3, ville.getCodePostal());
             pstmt.setFloat(4, ville.getCoordonnee().getLatitude());
             pstmt.setFloat(5, ville.getCoordonnee().getLongitude());
-            resultat = pstmt.executeUpdate();
+            pstmt.executeUpdate();
             statement.execute(query2);
-            
         } catch (SQLException e) {
             throw new DaoException("Impossible de communiquer avec la base de donnees");
         }
@@ -301,7 +304,6 @@ public class VilleDaoImpl implements VilleDao{
 	private void modifyVilleDao(String codeCommuneINSEE, Ville ville, DaoFactory daoFactory) throws DaoException {
 		Connection connexion = null;
 		PreparedStatement pstmt = null;
-        int resultat;
         Statement statement = null;
 		String query2 = "COMMIT;";
     	String query = "UPDATE ville_france SET Code_commune_INSEE=?, Nom_commune=?,  Code_postal=?, Latitude=?, Longitude=? WHERE Code_commune_INSEE=?";
@@ -315,7 +317,7 @@ public class VilleDaoImpl implements VilleDao{
             pstmt.setFloat(4, ville.getCoordonnee().getLatitude());
             pstmt.setFloat(5, ville.getCoordonnee().getLongitude());
             pstmt.setString(6, codeCommuneINSEE);
-            resultat = pstmt.executeUpdate();
+            pstmt.executeUpdate();
             statement.execute(query2);
         } catch (SQLException e) {
             throw new DaoException("Impossible de communiquer avec la base de donnees");
@@ -352,7 +354,6 @@ public class VilleDaoImpl implements VilleDao{
 	private void deleteVilleDao(String codeCommuneINSEE, DaoFactory daoFactory) throws DaoException {
 		Connection connexion = null;
 		PreparedStatement pstmt = null;
-        ResultSet resultat = null;
         Statement statement = null;
 		String query2 = "COMMIT;";
         String query = "DELETE FROM ville_france WHERE Code_commune_INSEE=? ;";
