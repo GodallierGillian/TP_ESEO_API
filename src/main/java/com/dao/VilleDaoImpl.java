@@ -20,8 +20,6 @@ public class VilleDaoImpl implements VilleDao{
 	  = LoggerFactory.getLogger(VilleDaoImpl.class);
 	
 	public ArrayList<Ville> findAllVilles(String codePostal){
-		System.out.println("findAllVilles");
-		System.out.println(codePostal);
 		DaoFactory daoFactory = DaoFactory.getInstance();
 		
 		ArrayList<Ville> listeVille = new ArrayList<Ville>();
@@ -29,24 +27,20 @@ public class VilleDaoImpl implements VilleDao{
 			try {
 				listeVille=findVilleByCodePostal(codePostal, daoFactory);
 			} catch (DaoException e) {
-				// TODO Auto-generated catch block
-				System.out.println("error");
+				logger.info("error");
 			}
 		}
 		else {
 			try {
 				listeVille=findAllVille(daoFactory);
 			} catch (DaoException e) {
-				// TODO Auto-generated catch block
-				System.out.println("error");
+				logger.info("error");
 			}
 		}
 		return listeVille;
 	}
 	@Override
 	public ArrayList<Ville> findAllVillesbyName(String nomCommune) {
-		System.out.println("findAllVilles");
-		System.out.println(nomCommune);
 		DaoFactory daoFactory = DaoFactory.getInstance();
 		
 		ArrayList<Ville> listeVille = new ArrayList<Ville>();
@@ -54,16 +48,14 @@ public class VilleDaoImpl implements VilleDao{
 			try {
 				listeVille=findVilleByName(nomCommune, daoFactory);
 			} catch (DaoException e) {
-				// TODO Auto-generated catch block
-				System.out.println("error");
+				logger.info("error");
 			}
 		}
 		else {
 			try {
 				listeVille=findAllVille(daoFactory);
 			} catch (DaoException e) {
-				// TODO Auto-generated catch block
-				System.out.println("error");
+				logger.info("error");
 			}
 		}
 		return listeVille;
@@ -102,7 +94,7 @@ public class VilleDaoImpl implements VilleDao{
                 	pstmt.close(); 
                 }
             } catch (SQLException e) {
-                throw new DaoException("Impossible de communiquer avec la base de donnees");
+            	logger.info("Impossible de communiquer avec la base de donnees");
             }
         }
 	}
@@ -139,15 +131,13 @@ public class VilleDaoImpl implements VilleDao{
                 	pstmt.close(); 
                 }
             } catch (SQLException e) {
-                throw new DaoException("Impossible de communiquer avec la base de donnees");
+            	logger.info("Impossible de communiquer avec la base de donnees");
             }
         }
 	}
 	
 	@Override
 	public ArrayList<Ville> findAllVillesbyCodeCommuneINSEE(String codeCommuneINSEE) {
-		System.out.println("try to find villes by Code Commune INSEE");
-		System.out.println(codeCommuneINSEE);
 		DaoFactory daoFactory = DaoFactory.getInstance();
 		
 		ArrayList<Ville> listeVille = new ArrayList<Ville>();
@@ -155,7 +145,7 @@ public class VilleDaoImpl implements VilleDao{
 			try {
 				listeVille=findVilleByCodeCommuneINSEE(codeCommuneINSEE, daoFactory);
 			} catch (DaoException e) {
-				System.out.println("error");
+				logger.info("error");
 			}
 		}
 		else {
@@ -163,7 +153,7 @@ public class VilleDaoImpl implements VilleDao{
 				listeVille=findAllVille(daoFactory);
 			} catch (DaoException e) {
 				// TODO Auto-generated catch block
-				System.out.println("error");
+				logger.info("error");
 			}
 		}
 		return listeVille;
@@ -202,7 +192,7 @@ public class VilleDaoImpl implements VilleDao{
                 	pstmt.close(); 
                 }
             } catch (SQLException e) {
-                throw new DaoException("Impossible de communiquer avec la base de donnees");
+            	logger.info("Impossible de communiquer avec la base de donnees");
             }
         }
 	}
@@ -237,7 +227,7 @@ public class VilleDaoImpl implements VilleDao{
                 	statement.close(); 
                 }
             } catch (SQLException e) {
-                throw new DaoException("Impossible de communiquer avec la base de donnees");
+            	logger.info("Impossible de communiquer avec la base de donnees");
             }
         }
 	}
@@ -289,7 +279,7 @@ public class VilleDaoImpl implements VilleDao{
                 	statement.close(); 
                 }
             } catch (SQLException e) {
-                throw new DaoException("Impossible de communiquer avec la base de donnees");
+            	logger.info("Impossible de communiquer avec la base de donnees");
             }
         }
 	}
@@ -340,7 +330,7 @@ public class VilleDaoImpl implements VilleDao{
                 	statement.close(); 
                 }
             } catch (SQLException e) {
-                throw new DaoException("Impossible de communiquer avec la base de donnees");
+            	logger.info("Impossible de communiquer avec la base de donnees");
             }
         }
 	}
@@ -386,7 +376,7 @@ public class VilleDaoImpl implements VilleDao{
                 	statement.close(); 
                 }
             } catch (SQLException e) {
-                throw new DaoException("Impossible de communiquer avec la base de donnees");
+            	logger.info("Impossible de communiquer avec la base de donnees");
             }
         }
 	}
